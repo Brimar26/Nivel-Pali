@@ -1,418 +1,432 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MateVida Digital - Portal Educativo</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>MateVida Digital - Nivel Compras en Palí</title>
     <style>
         :root {
-            --verde: #4CAF50; --azul: #2196F3; --amarillo: #FFC107; --naranja: #FF9800;
-            --fondo: #e3f2fd; --azul-tech: #1a237e;
+            --verde: #4CAF50;
+            --azul: #2196F3;
+            --amarillo: #FFC107;
+            --naranja: #FF9800;
+            --rojo: #e74c3c;
+            --fondo: #e3f2fd;
         }
-        body { 
-            margin: 0; background-color: var(--fondo); 
-            font-family: 'Arial Rounded MT Bold', sans-serif; text-align: center; 
-        }
-        
-        .top-nav {
-            background: white; padding: 15px; display: flex;
-            justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            align-items: center; flex-wrap: wrap; gap: 15px; /* Más espacio entre elementos */
-        }
-        .top-nav input { padding: 10px 15px; border-radius: 20px; border: 1px solid #ccc; width: 100%; max-width: 250px; }
-        .menu-usuario-top { display: flex; align-items: center; gap: 15px; font-size: 14px; font-weight: bold; }
 
-        .hero { padding: 20px 10px; }
-        .robot { font-size: 60px; display: block; }
-        .titulo { font-size: clamp(30px, 8vw, 45px); color: var(--verde); margin: 5px 0; }
-        .titulo span { color: var(--naranja); }
-        .slogan { font-weight: bold; color: var(--azul); margin-bottom: 20px; display: block; font-size: 18px; }
-
-        .menu { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; padding: 10px; max-width: 1000px; margin: 0 auto; }
-        .card {
-            width: calc(50% - 20px); /* Dos por fila en móviles */
-            max-width: 140px; padding: 18px 10px; border-radius: 20px; color: white;
-            font-weight: bold; cursor: pointer; box-shadow: 0 5px 0px rgba(0,0,0,0.2);
-            transition: 0.2s; font-size: 16px; box-sizing: border-box;
+        body {
+            margin: 0;
+            background-color: var(--fondo);
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            text-align: center;
+            -webkit-user-select: none;
+            user-select: none;
         }
-        .card:active { transform: translateY(4px); box-shadow: 0 1px 0px rgba(0,0,0,0.2); }
-        .c-verde { background: var(--verde); }
-        .c-azul { background: var(--azul); }
-        .c-amarillo { background: var(--amarillo); }
-        .c-naranja { background: var(--naranja); }
 
-        .main-stage {
-            max-width: 900px; margin: 20px 15px; background: white;
-            padding: 25px; border-radius: 30px; min-height: 400px;
+        /* PANTALLA DE INICIO CONSTANTE */
+        #pantalla-inicio {
+            position: fixed;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: var(--fondo);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999 !important;
+        }
+
+        .contenedor-menu {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 450px;
+        }
+
+        .btn-principal {
+            background: var(--verde);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            box-shadow: 0 5px 0px #388E3C;
+            transition: 0.1s;
+        }
+
+        .btn-principal:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0px #388E3C;
+        }
+
+        /* CONTENEDOR DEL JUEGO */
+        .game-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            display: inline-block; width: calc(100% - 30px); box-sizing: border-box;
+            width: calc(100% - 30px);
+            box-sizing: border-box;
         }
 
-        .grid-contenido {
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Columnas más flexibles */
-            gap: 15px; margin-top: 20px;
+        .header-status {
+            background: var(--azul);
+            color: white;
+            padding: 12px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 20px;
         }
-        .item-lista {
-            border: 2px solid #f0f0f0; padding: 15px; border-radius: 15px;
-            cursor: pointer; transition: 0.3s; background: white;
-            text-decoration: none; color: black; display: flex; flex-direction: column; align-items: center;
+
+        .avatar-box {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
         }
-        .item-lista h3 { font-size: 1rem; margin: 10px 0 0 0; line-height: 1.2; }
-        .item-lista:hover { border-color: var(--azul); transform: scale(1.03); }
-        
-        /* Visor Mejorado */
-        #visor-pro {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #1a1a2e; z-index: 2000;
-        }
-        .barra-visor {
-            background: #16213e; color: white; padding: 10px 15px; 
-            display: flex; justify-content: space-between; align-items: center;
-            gap: 10px;
-        }
-        #titulo-juego-actual {
-            font-size: 1rem; flex: 1; text-align: left;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .grupo-botones { display: flex; gap: 6px; flex-shrink: 0; }
-        .btn-accion {
-            border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; 
-            color: white; font-weight: bold; font-size: 12px;
-            display: flex; align-items: center; gap: 5px;
+
+        .avatar-emoticon { font-size: 50px; }
+        .avatar-mensaje { margin-top: 8px; font-size: 16px; font-weight: bold; color: #333; }
+
+        .pregunta-box {
+            background: #eef7fe;
+            border: 2px solid #b3e5fc;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 18px;
+            color: #1a237e;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
-        /* Modal QR */
-        #modal-qr {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 20px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            z-index: 2002; text-align: center; width: 85%; max-width: 280px;
-        }
-        #overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 2001;
+        .grid-opciones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
-        /* AJUSTES RESPONSIVOS */
-        @media (min-width: 601px) {
-            .card { width: 120px; }
-            .top-nav { padding: 15px 40px; }
-            .main-stage { margin: 30px auto; }
+        .btn-opcion {
+            border: none;
+            padding: 18px 10px;
+            border-radius: 20px;
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 0px rgba(0,0,0,0.15);
         }
 
-        @media (max-width: 600px) {
-            .top-nav { justify-content: center; }
-            .menu-usuario-top { width: 100%; justify-content: center; border-top: 1px solid #eee; pt: 10px; }
-            .barra-visor { padding: 8px; }
-            #titulo-juego-actual { font-size: 0.85rem; }
-            .btn-accion span:not(:first-child) { display: none; } /* En móvil muy pequeño solo queda el emoji */
-            .btn-accion { padding: 8px; }
+        .opc-0 { background: #e8f5e9; border: 2px solid var(--verde); }
+        .opc-1 { background: #e3f2fd; border: 2px solid var(--azul); }
+        .opc-2 { background: #fffde7; border: 2px solid var(--amarillo); }
+        .opc-3 { background: #fff3e0; border: 2px solid var(--naranja); }
+
+        #btn-siguiente {
+            display: none;
+            background: var(--naranja);
+            box-shadow: 0 5px 0px #E65100;
+            margin-top: 20px;
         }
 
-        /* Estilos para el Bloqueo de Bienvenida */
-        #bloqueo-inicio {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--fondo); z-index: 3000; display: flex;
-            justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
+        #pantalla-final { display: none; }
+
+        .tabla-resultados {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #f9f9f9;
         }
-        .contenedor-login {
-            background: white; padding: 30px; border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px;
+
+        .tabla-resultados th, .tabla-resultados td { padding: 15px; text-align: center; font-size: 18px; }
+        .tabla-resultados th { background: var(--azul); color: white; }
+        .fila-dato { border-bottom: 1px solid #eee; }
+
+        @media (max-width: 480px) {
+            .grid-opciones { grid-template-columns: 1fr; }
         }
-        .contenedor-login input {
-            width: 100%; padding: 12px 20px; margin: 15px 0;
-            border-radius: 25px; border: 2px solid #ddd; font-size: 16px;
-            box-sizing: border-box; text-align: center;
-        }
-        .contenedor-login button {
-            background: var(--verde); color: white; border: none;
-            padding: 12px 30px; font-size: 18px; font-weight: bold;
-            border-radius: 25px; cursor: pointer; width: 100%;
-            box-shadow: 0 4px 0px #388E3C; transition: 0.2s;
-        }
-        .contenedor-login button:active { transform: translateY(4px); box-shadow: 0 0px 0px #388E3C; }
     </style>
 </head>
 <body>
 
-<div id="bloqueo-inicio">
-    <div class="contenedor-login">
-        <span style="font-size: 50px;">🤖</span>
-        <h2 style="color: var(--azul); margin: 10px 0;">¡Bienvenido a MateVida!</h2>
-        <p style="color: #666; font-size: 14px;">Ingresa tu nombre o usuario para comenzar a jugar</p>
-        <input type="text" id="nombreUsuarioInput" placeholder="Tu Nombre o Usuario...">
-        <button onclick="ingresarAApp()">¡Comenzar! 🚀</button>
-    </div>
-</div>
-
-<div class="top-nav">
-    <input type="text" id="inputBusqueda" onkeyup="buscarContenido()" placeholder="🔍 Buscar actividad...">
-    <div class="menu-usuario-top">
-        <span onclick="irInicio()" style="cursor:pointer">🏠 Inicio</span> | 
-        <span onclick="accederTrafico()" style="cursor:pointer; color: var(--naranja);">📊 Tráfico</span>
-    </div>
-</div>
-
-<div class="hero">
-    <span class="robot">🤖</span>
-    <h1 class="titulo">MateVida <span>Digital</span></h1>
-    <span class="slogan">“Aprende jugando”</span>
-</div>
-
-<div class="menu">
-    <div class="card c-verde" onclick="cargarSeccion('juegos')">🎮<br>Juegos</div>
-    <div class="card c-azul" onclick="cargarSeccion('videos')">📺<br>Videos</div>
-    <div class="card c-amarillo" onclick="cargarSeccion('fichas')">📚<br>Fichas</div>
-    <div class="card c-naranja" onclick="cargarSeccion('recursos')">👥<br>Recursos</div>
-</div>
-
-<div id="pantalla" class="main-stage">
-    <h2>Entrena tu Mente, Domina los Números</h2>
-    <p>Selecciona una categoría arriba para comenzar a aprender.</p>
-    <img src="https://raw.githubusercontent.com/Brimar26/portada/main/portadamate.png" alt="Portada MateVida" style="max-width:100%; border-radius:20px; display: block; margin: 20px auto;">   
-</div>
-
-<div id="visor-pro">
-    <div class="barra-visor" translate="no">
-        <strong id="titulo-juego-actual">Cargando...</strong>
-        <div class="grupo-botones">
-            <button onclick="compartirJuego()" class="btn-accion" style="background: var(--azul);"><span>🔗</span> <span>COMPARTIR</span></button>
-            <button onclick="mostrarQR()" class="btn-accion" style="background: var(--amarillo); color: black;"><span>📱</span> <span>QR</span></button>
-            <button onclick="cerrarSoftware()" class="btn-accion" style="background:#e74c3c;"><span>✖</span> <span>CERRAR</span></button>
+    <div id="pantalla-inicio">
+        <div class="contenedor-menu">
+            <span style="font-size: 65px;">🛒</span>
+            <h1 style="color: var(--azul); margin: 10px 0 5px 0;">Nivel: Compras en Palí</h1>
+            <p style="color: #666; margin-bottom: 25px; font-size: 16px;">¡Resuelve los desafíos del supermercado!</p>
+            <button class="btn-principal" id="btn-comenzar-juego">¡Empezar Juego! 🚀</button>
         </div>
     </div>
-    <iframe id="iframe-software" src="" style="width:100%; height:calc(100% - 55px); border:none; background: white;"></iframe>
-</div>
 
-<div id="overlay" onclick="cerrarQR()"></div>
-<div id="modal-qr">
-    <h3>Escanea para jugar</h3>
-    <div id="qrcode" style="display: flex; justify-content: center; margin: 15px;"></div>
-    <button onclick="cerrarQR()" class="btn-accion" style="background: #333; margin: 0 auto; display: block; width: 100px; justify-content: center;">Cerrar</button>
-</div>
+    <div class="game-container">
+        <div class="header-status">
+            <span id="txt-progreso">Pregunta: 1 / 7</span>
+            <span id="txt-tiempo">⏱️ Tiempo: 00:00</span>
+            <span id="txt-puntos">⭐ Aciertos: 0</span>
+        </div>
+
+        <div class="avatar-box" id="caja-avatar">
+            <div class="avatar-emoticon" id="avatar-cara">🤖</div>
+            <div class="avatar-mensaje" id="avatar-texto">¡Hola! Analiza con cuidado cada problema.</div>
+        </div>
+
+        <div id="bloqueo-juego">
+            <div class="pregunta-box" id="campo-pregunta">Cargando desafío matemático...</div>
+            <div class="grid-opciones" id="contenedor-opciones"></div>
+            <button id="btn-siguiente" class="btn-principal" onclick="avanzarPregunta()">Siguiente Reto ➔</button>
+        </div>
+
+        <div id="pantalla-final">
+            <span style="font-size: 60px;">🏆</span>
+            <h2 style="color: var(--azul);">¡Desafío Completado!</h2>
+            <table class="tabla-resultados">
+                <thead>
+                    <tr><th colspan="2">Tus Resultados Finales</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="fila-dato">
+                        <td>⏱️ <b>Tiempo Total:</b></td>
+                        <td id="td-tiempo-final" style="font-weight: bold;">00:00</td>
+                    </tr>
+                    <tr class="fila-dato">
+                        <td>📊 <b>Rendimiento:</b></td>
+                        <td id="td-porcentaje-final" style="font-weight: bold; font-size: 22px; color: var(--verde);">0%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn-principal" style="margin-top:30px;" onclick="reiniciarJuego()">Volver a Intentar 🔄</button>
+        </div>
+    </div>
 
 <script>
-let urlActual = "";
-let nombreActual = "";
-
-// LÓGICA DE CONTROL DE TRÁFICO LOCAL Y ACCESO
-const CONTRASEÑA_ADMIN = "admin123"; // Cambia esta contraseña si lo deseas
-
-function ingresarAApp() {
-    let nombre = document.getElementById('nombreUsuarioInput').value.trim();
-    if (nombre === "") {
-        alert("Por favor, introduce un nombre o usuario válido.");
-        return;
-    }
-    
-    // Guardar el usuario en el historial de la sesión actual
-    let historico = JSON.parse(sessionStorage.getItem('trafico_usuarios')) || [];
-    historico.push({ nombre: nombre, hora: new Date().toLocaleTimeString() });
-    sessionStorage.setItem('trafico_usuarios', JSON.stringify(historico));
-    
-    // Ocultar la pantalla de bienvenida
-    document.getElementById('bloqueo-inicio').style.display = 'none';
-}
-
-function accederTrafico() {
-    let psw = prompt("SÓLO ADMINISTRADOR: Introduce la contraseña para ver el tráfico:");
-    if (psw === CONTRASEÑA_ADMIN) {
-        mostrarPanelTrafico();
-    } else if (psw !== null) {
-        alert("Contraseña incorrecta. Acceso denegado.");
-    }
-}
-
-function mostrarPanelTrafico() {
-    let historico = JSON.parse(sessionStorage.getItem('trafico_usuarios')) || [];
-    let listaHTML = historico.length === 0 
-        ? "<p>No hay registros de ingresos todavía.</p>" 
-        : `<ul style="text-align:left; display:inline-block; margin:10px auto;">` + 
-          historico.map(u => `<li><strong>${u.nombre}</strong> ingresó a las ${u.hora}</li>`).join('') + 
-          `</ul>`;
-
-    document.getElementById('pantalla').innerHTML = `
-        <h2 style="color:var(--azul)">📊 Panel de Tráfico (Privado)</h2>
-        <div style="background:#f9f9f9; padding:20px; border-radius:15px; display:inline-block; width: 100%; max-width: 500px; box-sizing:border-box;">
-            <p><strong>Total de accesos registrados en esta sesión:</strong> ${historico.length}</p>
-            <hr style="border:1px solid #ddd;">
-            <h4>Usuarios que han entrado:</h4>
-            ${listaHTML}
-        </div>`;
-}
-
-function lanzarSoftware(url, nombre) {
-    urlActual = url;
-    nombreActual = nombre;
-    document.getElementById('titulo-juego-actual').innerText = nombre;
-    const iframe = document.getElementById('iframe-software');
-    iframe.src = url;
-    document.getElementById('visor-pro').style.display = 'block';
-    document.body.style.overflow = 'hidden'; 
-}
-
-async function compartirJuego() {
-    const shareData = {
-        title: nombreActual,
-        text: `¡Mira este juego en MateVida Digital: ${nombreActual}!`,
-        url: urlActual
-    };
-    try {
-        if (navigator.share) {
-            await navigator.share(shareData);
-        } else {
-            await navigator.clipboard.writeText(urlActual);
-            alert("Enlace copiado al portapapeles");
+    // Audio Context seguro
+    const AudioGame = {
+        ctx: null,
+        init() {
+            if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        },
+        playCorrecto() {
+            this.init();
+            try {
+                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.3);
+            } catch(e) {}
+        },
+        playError() {
+            this.init();
+            try {
+                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.2);
+            } catch(e) {}
         }
-    } catch (err) { console.log("Error al compartir", err); }
-}
+    };
 
-function mostrarQR() {
-    document.getElementById('qrcode').innerHTML = ""; 
-    new QRCode(document.getElementById("qrcode"), {
-        text: urlActual,
-        width: 180,
-        height: 180
+    const bancoProblemas = [
+        {
+            pregunta: "🛒 <b>Problema 1:</b> Compras una barra de mantequilla por C$35 y un paquete de galletas por C$15. ¿Cuánto debes pagar en total?",
+            opciones: ["C$40", "C$45", "C$50", "C$55"],
+            correcta: "C$50"
+        },
+        {
+            pregunta: "🍫 <b>Problema 2:</b> Un chocolate cuesta C$12. Si decides comprar 4 chocolates iguales para compartir, ¿cuánto gastarás en total?",
+            opciones: ["C$36", "C$48", "C$44", "C$52"],
+            correcta: "C$48"
+        },
+        {
+            pregunta: "🪙 <b>Problema 3:</b> Pagas una bolsa de arroz de C$22 con un billete de C$50. ¿Cuánto vuelto te deben entregar en la caja?",
+            opciones: ["C$28", "C$38", "C$26", "C$32"],
+            correcta: "C$28"
+        },
+        {
+            pregunta: "🥛 <b>Problema 4:</b> Una caja grande con 6 litros de leche cuesta C$120. ¿Cuánto cuesta cada litro de leche individualmente?",
+            opciones: ["C$15", "C$20", "C$25", "C$18"],
+            correcta: "C$20"
+        },
+        {
+            pregunta: "🍎 <b>Problema 5:</b> Una bolsa de manzanas pesa 3 libras. Si subes al carrito 4 bolsas iguales, ¿cuántas libras de manzana llevas en total?",
+            opciones: ["7 libras", "10 libras", "12 libras", "14 libras"],
+            correcta: "12 libras"
+        },
+        {
+            pregunta: "🧼 <b>Problema 6:</b> El jabón líquido cuesta C$45, pero hoy tiene una rebaja especial de C$15. ¿Cuál es el precio final del jabón con el descuento?",
+            opciones: ["C$30", "C$35", "C$25", "C$40"],
+            correcta: "C$30"
+        },
+        {
+            pregunta: "📦 <b>Problema 7:</b> En el estante quedan 3 filas de jugos, y cada fila tiene exactamente 8 jugos. ¿Cuántos jugos quedan disponibles en total?",
+            opciones: ["21 jugos", "24 jugos", "28 jugos", "18 jugos"],
+            correcta: "24 jugos"
+        }
+    ];
+
+    let indiceActual = 0;
+    let aciertosDirectos = 0; 
+    let erroresCometidos = 0; 
+    let haFalladoEnPreguntaActual = false;
+    let haRespondidoCorrectamente = false;
+    let tiempoSegundos = 0;
+    let intervaloCronometro = null;
+
+    // Vinculación segura del botón de inicio cuando el documento esté totalmente cargado
+    document.addEventListener("DOMContentLoaded", function() {
+        actualizarMarcadores();
+        mostrarProblema();
+        
+        const botonInicio = document.getElementById('btn-comenzar-juego');
+        if(botonInicio) {
+            botonInicio.addEventListener('click', function() {
+                // Forzar desaparición pase lo que pase
+                document.getElementById('pantalla-inicio').style.display = 'none';
+                iniciarJuego();
+            });
+        }
     });
-    document.getElementById('modal-qr').style.display = 'block';
-    document.getElementById('overlay').style.display = 'block';
-}
 
-function cerrarQR() {
-    document.getElementById('modal-qr').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-}
-
-function cerrarSoftware() {
-    document.getElementById('visor-pro').style.display = 'none';
-    document.getElementById('iframe-software').src = ""; 
-    document.body.style.overflow = 'auto';
-    urlActual = "";
-}
-
-function buscarContenido() {
-    let input = document.getElementById('inputBusqueda').value.toLowerCase();
-    let items = document.getElementsByClassName('item-lista');
-    for (let i = 0; i < items.length; i++) {
-        let texto = items[i].innerText.toLowerCase();
-        items[i].style.display = texto.includes(input) ? "flex" : "none";
+    function iniciarJuego() {
+        indiceActual = 0;
+        aciertosDirectos = 0;
+        erroresCometidos = 0;
+        haRespondidoCorrectamente = false;
+        haFalladoEnPreguntaActual = false;
+        tiempoSegundos = 0;
+        
+        if(intervaloCronometro) clearInterval(intervaloCronometro);
+        
+        document.getElementById('bloqueo-juego').style.display = 'block';
+        document.getElementById('pantalla-final').style.display = 'none';
+        document.getElementById('btn-siguiente').style.display = 'none';
+        
+        actualizarMarcadores();
+        mostrarProblema();
+        iniciarCronometro();
     }
-}
 
-function irInicio() { 
-    // Evitamos el reload completo para no perder temporalmente el sessionStorage del tráfico en la demo rápida
-    document.getElementById('pantalla').innerHTML = `
-        <h2>Entrena tu Mente, Domina los Números</h2>
-        <p>Selecciona una categoría arriba para comenzar a aprender.</p>
-        <img src="https://raw.githubusercontent.com/Brimar26/portada/main/portadamate.png" alt="Portada MateVida" style="max-width:100%; border-radius:20px; display: block; margin: 20px auto;">
-    `;
-}
+    function iniciarCronometro() {
+        intervaloCronometro = setInterval(() => {
+            tiempoSegundos++;
+            let mins = Math.floor(tiempoSegundos / 60).toString().padStart(2, '0');
+            let segs = (tiempoSegundos % 60).toString().padStart(2, '0');
+            document.getElementById('txt-tiempo').innerText = `⏱️ Tiempo: ${mins}:${segs}`;
+        }, 1000);
+    }
 
-function cargarSeccion(tipo) {
-    const pantalla = document.getElementById('pantalla');
-    let html = "";
+    function mostrarProblema() {
+        haRespondidoCorrectamente = false;
+        haFalladoEnPreguntaActual = false;
+        document.getElementById('btn-siguiente').style.display = 'none';
+        restablecerAvatar();
+        
+        let problema = bancoProblemas[indiceActual];
+        if(!problema) return;
+        
+        document.getElementById('campo-pregunta').innerHTML = problema.pregunta;
+        
+        let contenedor = document.getElementById('contenedor-opciones');
+        contenedor.innerHTML = "";
+        
+        problema.opciones.forEach((opcion, i) => {
+            let boton = document.createElement('button');
+            boton.className = `btn-opcion opc-${i}`;
+            boton.innerText = opcion;
+            boton.onclick = () => verificarRespuesta(opcion, boton);
+            contenedor.appendChild(boton);
+        });
+    }
 
-    if (tipo === 'juegos') {
-        html = `
-            <h2 style="color:var(--verde)">🎮 Panel de Actividades</h2>
-            <div class="grid-contenido">
-                <div class="item-lista" onclick="lanzarSoftware('https://view.genially.com/69ec0dd6dc5b8be996902a64', 'Carrera Operaciones')">
-                    <div style="font-size:40px">🏎️</div><h3>Carrera Operaciones</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://view.genially.com/69ec0094c6e29311f5854247', 'Operaciones Matemáticas')">
-                    <div style="font-size:40px">➕</div><h3>Operaciones Matemáticas</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://es.educaplay.com/juego/28831395-operaciones_fundamentales_si_no.html', 'Si o No')">
-                    <div style="font-size:40px">✅</div><h3>Si o No</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://es.educaplay.com/juego/28831338-operaciones_en_la_vida_diaria.html', 'Vida Diaria')">
-                    <div style="font-size:40px">📋</div><h3>Vida Diaria</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://es.educaplay.com/juego/28918221-desafios_cotidianos_con_operaciones.html', 'Desafíos Cotidianos')">
-                    <div style="font-size:40px">🏆</div><h3>Desafíos Cotidianos</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://view.genially.com/69f7e18ce15a962730ed9a10', 'Compras')">
-                    <div style="font-size:40px">🛒</div><h3>Compras</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://brimar26.github.io/DADOS-M-GICOS/', 'DADOS')">
-                    <div style="font-size:40px">🎮</div><h3>DADOS</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://brimar26.github.io/Matecarrera/', 'Matecarrera')">
-                    <div style="font-size:40px">🏎</div><h3>Matecarrera</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://github.com/Brimar26/Nivel-Pali', 'NIVEL PALI')">
-                    <div style="font-size:40px">🅿️</div><h3>NIVEL PALI</h3>
-                </div>
-                
-                <div class="item-lista" onclick="lanzarSoftware('https://brimar26.github.io/tablas-de-multiplicar/', 'MATEBLAS')">
-                    <div style="font-size:40px">🤖✖️</div><h3>MATEBLAS</h3>
-                </div>
-            </div>`;
-    } 
-    else if (tipo === 'videos') {
-        html = `
-            <h2 style="color:var(--azul)">📺 Videoteca Educativa</h2>
-            <div class="grid-contenido">
-                <div class="item-lista" onclick="lanzarSoftware('https://www.youtube.com/embed/aEh9WnqiyAg', 'Operaciones Vida Diaria')">
-                    <img src="https://img.youtube.com/vi/aEh9WnqiyAg/mqdefault.jpg" width="100%" style="border-radius:10px; margin-bottom:10px;">
-                    <h3>Vida Diaria</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://www.youtube.com/embed/otatgqU8o0w', 'Matemática divertida')">
-                    <img src="https://img.youtube.com/vi/otatgqU8o0w/mqdefault.jpg" width="100%" style="border-radius:10px; margin-bottom:10px;">
-                    <h3>Matemática divertida</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://www.youtube.com/embed/yyKkL0R59g0', 'Aprende a dividir')">
-                    <img src="https://img.youtube.com/vi/yyKkL0R59g0/mqdefault.jpg" width="100%" style="border-radius:10px; margin-bottom:10px;">
-                    <h3>Aprende a dividir</h3>
-                </div>
-                <div class="item-lista" onclick="lanzarSoftware('https://www.youtube.com/embed/WBqXpj1_96g', 'Operaciones')">
-                    <img src="https://img.youtube.com/vi/WBqXpj1_96g/mqdefault.jpg" width="100%" style="border-radius:10px; margin-bottom:10px;">
-                    <h3>Operaciones</h3>
-                </div>
-            </div>`;
+    function verificarRespuesta(opcionSeleccionada, botonPresionado) {
+        if (haRespondidoCorrectamente) return;
+
+        let problema = bancoProblemas[indiceActual];
+        if(opcionSeleccionada.trim() === problema.correcta.trim()) {
+            AudioGame.playCorrecto();
+            if (!haFalladoEnPreguntaActual) aciertosDirectos++;
+            haRespondidoCorrectamente = true;
+            actualizarMarcadores();
+            
+            document.getElementById('avatar-cara').innerText = "🥳";
+            document.getElementById('avatar-texto').innerText = "¡CORRECTO! 🌟 ¡Excelente trabajo analizando los datos!";
+            document.getElementById('caja-avatar').style.backgroundColor = "#e8f5e9";
+            
+            document.querySelectorAll('.btn-opcion').forEach(b => b.disabled = true);
+            botonPresionado.style.background = "#a5d6a7";
+            document.getElementById('btn-siguiente').style.display = 'block';
+        } else {
+            AudioGame.playError();
+            haFalladoEnPreguntaActual = true;
+            erroresCometidos++; 
+            
+            document.getElementById('avatar-cara').innerText = "😥";
+            document.getElementById('avatar-texto').innerText = "¡INCORRECTO! ❌ Intenta otra vez.";
+            document.getElementById('caja-avatar').style.backgroundColor = "#ffebee";
+            
+            botonPresionado.style.background = "#ffcdd2";
+            botonPresionado.disabled = true;
+        }
     }
-    else if (tipo === 'fichas') {
-        html = `
-            <h2 style="color:var(--amarillo)">📚 Fichas e Imprimibles</h2>
-            <div class="grid-contenido">
-                <a href="https://web.seducoahuila.gob.mx/biblioweb/upload/operaciones-y-problemas-3c2ba-de-primaria%20(1).pdf" target="_blank" class="item-lista">
-                    <div style="font-size:40px">🧮</div><h3>Operaciones y Problemas</h3>
-                </a>
-                <a href="https://www.jica.go.jp/Resource/project/elsalvador/004/materials/ku57pq00003u6zom-att/cuaderno_ejercicios_primaria_05.pdf" target="_blank" class="item-lista">
-                    <div style="font-size:40px">📓</div><h3>Cuaderno de Ejercicios</h3>
-                </a>
-                <a href="https://www.mamutmatematicas.com/ejercicios/tabla-orden-operaciones.php" target="_blank" class="item-lista">
-                    <div style="font-size:40px">⚖️</div><h3>Orden de Operaciones</h3>
-                </a>
-                <a href="https://arbolabc.com/juegos-tablas-de-multiplicar/tablas-imprimibles/operaciones-tabla-del-7" target="_blank" class="item-lista">
-                    <div style="font-size:40px">✖️</div><h3>Tablas de Multiplicar</h3>
-                </a>
-            </div>`;
+
+    function avanzarPregunta() {
+        indiceActual++;
+        if (indiceActual < bancoProblemas.length) {
+            mostrarProblema();
+            actualizarMarcadores();
+        } else {
+            finalizarJuego();
+        }
     }
-    else if (tipo === 'recursos') {
-        html = `
-            <h2 style="color:var(--naranja)">👥 Sección de Recursos</h2>
-            <div class="grid-contenido">
-                <div class="item-lista">
-                    <div style="font-size:40px">🏠</div>
-                    <h3>Guía para Padres</h3>
-                    <a href='https://gu-a-para-padres.tiiny.site/' target="_blank" style="margin-top:10px; color:var(--azul);">Entrar al Menú</a>
-                </div>
-                <div class="item-lista">
-                    <div style="font-size:40px">👤</div>
-                    <h3>Guía para Estudiantes</h3>
-                    <a href='https://www.pdffiller.com/s/1LObffqZo7' target="_blank" style="margin-top:10px; color:var(--azul);">Entrar al Menú</a>
-                </div>
-                <div class="item-lista">
-                    <div style="font-size:40px">🎖️</div>
-                    <h3>Guía para Docentes</h3>
-                    <a href='https://www.pdffiller.com/s/ULtGifon' target="_blank" style="margin-top:10px; color:var(--azul);">Entrar al Menú</a>
-                </div>
-            </div>`;
+
+    function restablecerAvatar() {
+        document.getElementById('avatar-cara').innerText = "🤖";
+        document.getElementById('avatar-texto').innerText = "¡Lee con atención el problema de compras!";
+        document.getElementById('caja-avatar').style.backgroundColor = "#f5f5f5";
     }
-    pantalla.innerHTML = html;
-}
+
+    function actualizarMarcadores() {
+        document.getElementById('txt-progreso').innerText = `Pregunta: ${indiceActual + 1} / ${bancoProblemas.length}`;
+        document.getElementById('txt-puntos').innerText = `⭐ Aciertos: ${aciertosDirectos}`;
+    }
+
+    function finalizarJuego() {
+        if(intervaloCronometro) clearInterval(intervaloCronometro);
+        document.getElementById('bloqueo-juego').style.display = 'none';
+        document.getElementById('pantalla-final').style.display = 'block';
+        
+        let mins = Math.floor(tiempoSegundos / 60).toString().padStart(2, '0');
+        let segs = (tiempoSegundos % 60).toString().padStart(2, '0');
+        document.getElementById('td-tiempo-final').innerText = `${mins}:${segs}`;
+        
+        let penalizacion = erroresCometidos * 5;
+        let porcentajeFinal = Math.max(0, 100 - penalizacion);
+        document.getElementById('td-porcentaje-final').innerText = `${porcentajeFinal}%`;
+    }
+
+    function reiniciarJuego() {
+        document.getElementById('pantalla-inicio').style.display = 'flex';
+    }
 </script>
 </body>
 </html>
