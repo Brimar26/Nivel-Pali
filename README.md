@@ -15,6 +15,7 @@
 
         body {
             margin: 0;
+            padding: 0;
             background-color: var(--fondo);
             font-family: 'Arial Rounded MT Bold', sans-serif;
             text-align: center;
@@ -36,100 +37,117 @@
 
         .contenedor-menu {
             background: white;
-            padding: 30px;
-            border-radius: 30px;
+            padding: 25px;
+            border-radius: 25px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 450px;
+            width: 85%;
+            max-width: 400px;
         }
 
         .btn-principal {
             background: var(--verde);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 22px;
+            padding: 12px 24px;
+            font-size: 20px;
             font-weight: bold;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             width: 100%;
             margin-top: 15px;
-            box-shadow: 0 5px 0px #388E3C;
+            box-shadow: 0 4px 0px #388E3C;
             transition: 0.1s;
         }
 
         .btn-principal:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: 0 1px 0px #388E3C;
         }
 
-        /* CONTENEDOR DEL JUEGO */
+        /* CONTENEDOR DEL JUEGO OPTIMIZADO PARA MÓVILES */
         .game-container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 10px auto;
             background: white;
-            padding: 20px;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            width: calc(100% - 30px);
+            padding: 12px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            width: calc(100% - 20px);
             box-sizing: border-box;
         }
 
+        /* BARRA AZUL COMPACTA */
         .header-status {
             background: var(--azul);
             color: white;
-            padding: 12px;
-            border-radius: 20px;
+            padding: 8px 12px;
+            border-radius: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 20px;
+            font-size: 13px;
+            margin-bottom: 10px;
         }
 
+        /* CAJA DE AVATAR REDUCIDA AL MÁXIMO */
         .avatar-box {
             background: #f5f5f5;
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 20px;
-            min-height: 110px;
+            border-radius: 14px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            min-height: auto;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
+            gap: 8px;
         }
 
-        .avatar-emoticon { font-size: 50px; }
-        .avatar-mensaje { margin-top: 8px; font-size: 16px; font-weight: bold; color: #333; }
+        .avatar-emoticon { 
+            font-size: 24px; 
+        }
+        
+        .avatar-mensaje { 
+            margin-top: 0; 
+            font-size: 13px; 
+            font-weight: bold; 
+            color: #333;
+            text-align: left;
+            line-height: 1.2;
+        }
 
+        /* CAJA DE PREGUNTA */
         .pregunta-box {
             background: #eef7fe;
             border: 2px solid #b3e5fc;
-            border-radius: 20px;
-            padding: 20px;
-            font-size: 18px;
+            border-radius: 16px;
+            padding: 12px 15px;
+            font-size: 15px;
             color: #1a237e;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.4;
+            margin-bottom: 12px;
             text-align: left;
         }
 
+        /* REJILLA DE RESPUESTAS EN 2 COLUMNAS EN CELULARES */
         .grid-opciones {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 10px;
         }
 
         .btn-opcion {
             border: none;
-            padding: 18px 10px;
-            border-radius: 20px;
+            padding: 14px 8px;
+            border-radius: 14px;
             color: #333;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 0px rgba(0,0,0,0.15);
+            box-shadow: 0 3px 0px rgba(0,0,0,0.15);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .opc-0 { background: #e8f5e9; border: 2px solid var(--verde); }
@@ -140,27 +158,39 @@
         #btn-siguiente {
             display: none;
             background: var(--naranja);
-            box-shadow: 0 5px 0px #E65100;
-            margin-top: 20px;
+            box-shadow: 0 4px 0px #E65100;
+            margin-top: 12px;
+            padding: 10px 20px;
+            font-size: 18px;
         }
 
         #pantalla-final { display: none; }
 
         .tabla-resultados {
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
             border-collapse: collapse;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             background: #f9f9f9;
         }
 
-        .tabla-resultados th, .tabla-resultados td { padding: 15px; text-align: center; font-size: 18px; }
+        .tabla-resultados th, .tabla-resultados td { padding: 12px; text-align: center; font-size: 16px; }
         .tabla-resultados th { background: var(--azul); color: white; }
         .fila-dato { border-bottom: 1px solid #eee; }
 
+        /* REGLAS ESPECÍFICAS PARA PANTALLAS PEQUEÑAS (EVITA VOLVER A UNA COLUMNA) */
         @media (max-width: 480px) {
-            .grid-opciones { grid-template-columns: 1fr; }
+            .grid-opciones { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            .btn-opcion {
+                font-size: 16px;
+                padding: 12px 4px;
+            }
+            .avatar-emoticon {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
@@ -168,9 +198,9 @@
 
     <div id="pantalla-inicio">
         <div class="contenedor-menu">
-            <span style="font-size: 65px;">🛒</span>
-            <h1 style="color: var(--azul); margin: 10px 0 5px 0;">Nivel: Compras en Palí</h1>
-            <p style="color: #666; margin-bottom: 25px; font-size: 16px;">¡Resuelve los desafíos del supermercado!</p>
+            <span style="font-size: 50px;">🛒</span>
+            <h1 style="color: var(--azul); margin: 8px 0 5px 0; font-size: 24px;">Nivel: Compras en Palí</h1>
+            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">¡Resuelve los desafíos del supermercado!</p>
             <button class="btn-principal" id="btn-comenzar-juego">¡Empezar Juego! 🚀</button>
         </div>
     </div>
@@ -178,7 +208,7 @@
     <div class="game-container">
         <div class="header-status">
             <span id="txt-progreso">Pregunta: 1 / 7</span>
-            <span id="txt-tiempo">⏱️ Tiempo: 00:00</span>
+            <span id="txt-tiempo">⏱️ 00:00</span>
             <span id="txt-puntos">⭐ Aciertos: 0</span>
         </div>
 
@@ -194,8 +224,8 @@
         </div>
 
         <div id="pantalla-final">
-            <span style="font-size: 60px;">🏆</span>
-            <h2 style="color: var(--azul);">¡Desafío Completado!</h2>
+            <span style="font-size: 50px;">🏆</span>
+            <h2 style="color: var(--azul); font-size: 22px; margin: 10px 0;">¡Desafío Completado!</h2>
             <table class="tabla-resultados">
                 <thead>
                     <tr><th colspan="2">Tus Resultados Finales</th></tr>
@@ -207,16 +237,15 @@
                     </tr>
                     <tr class="fila-dato">
                         <td>📊 <b>Rendimiento:</b></td>
-                        <td id="td-porcentaje-final" style="font-weight: bold; font-size: 22px; color: var(--verde);">0%</td>
+                        <td id="td-porcentaje-final" style="font-weight: bold; font-size: 20px; color: var(--verde);">0%</td>
                     </tr>
                 </tbody>
             </table>
-            <button class="btn-principal" style="margin-top:30px;" onclick="reiniciarJuego()">Volver a Intentar 🔄</button>
+            <button class="btn-principal" style="margin-top:20px;" onclick="reiniciarJuego()">Volver a Intentar 🔄</button>
         </div>
     </div>
 
 <script>
-    // Audio Context seguro
     const AudioGame = {
         ctx: null,
         init() {
@@ -291,7 +320,6 @@
     let tiempoSegundos = 0;
     let intervaloCronometro = null;
 
-    // Vinculación segura del botón de inicio cuando el documento esté totalmente cargado
     document.addEventListener("DOMContentLoaded", function() {
         actualizarMarcadores();
         mostrarProblema();
@@ -299,7 +327,6 @@
         const botonInicio = document.getElementById('btn-comenzar-juego');
         if(botonInicio) {
             botonInicio.addEventListener('click', function() {
-                // Forzar desaparición pase lo que pase
                 document.getElementById('pantalla-inicio').style.display = 'none';
                 iniciarJuego();
             });
@@ -330,7 +357,7 @@
             tiempoSegundos++;
             let mins = Math.floor(tiempoSegundos / 60).toString().padStart(2, '0');
             let segs = (tiempoSegundos % 60).toString().padStart(2, '0');
-            document.getElementById('txt-tiempo').innerText = `⏱️ Tiempo: ${mins}:${segs}`;
+            document.getElementById('txt-tiempo').innerText = `⏱️ ${mins}:${segs}`;
         }, 1000);
     }
 
